@@ -47,37 +47,60 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                   as={Fragment}
                   enter="transition ease-out duration-150"
                   enterFrom="opacity-0"
-                  enterTo="opacity-100 backdrop-blur-2xl"
+                  enterTo="opacity-100"
                   leave="transition ease-in duration-150"
-                  leaveFrom="opacity-100 backdrop-blur-2xl"
+                  leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-30 inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
+                  <PopoverPanel className="fixed inset-0 w-full h-screen z-30 bg-[rgba(3,7,18,0.95)]">
                     <div
                       data-testid="nav-menu-popup"
-                      className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
+                      className="flex flex-col h-full p-6"
                     >
-                      <div className="flex justify-end" id="xmark">
-                        <button data-testid="close-menu-button" onClick={close}>
-                          <XMark />
+                      {/* Close button at the top-right corner */}
+                      <div className="flex justify-end">
+                        <button
+                          data-testid="close-menu-button"
+                          onClick={close}
+                          className="p-2 hover:bg-ui-fg-disabled rounded-full"
+                        >
+                          {/* Custom SVG for the close button */}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-12 h-12"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
                         </button>
                       </div>
-                      <ul className="flex flex-col gap-6 items-start justify-start">
-                        {Object.entries(SideMenuItems).map(([name, href]) => {
-                          return (
-                            <li key={name}>
-                              <LocalizedClientLink
-                                href={href}
-                                className="text-3xl leading-10 hover:text-ui-fg-disabled"
-                                onClick={close}
-                                data-testid={`${name.toLowerCase()}-link`}
-                              >
-                                {name}
-                              </LocalizedClientLink>
-                            </li>
-                          )
-                        })}
-                      </ul>
+
+                      {/* Scrollable links container */}
+                      <div className="flex-1 overflow-y-auto mt-6">
+                        <ul className="flex flex-col gap-6 items-start justify-start">
+                          {Object.entries(SideMenuItems).map(([name, href]) => {
+                            return (
+                              <li key={name}>
+                                <LocalizedClientLink
+                                  href={href}
+                                  className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                                  onClick={close}
+                                  data-testid={`${name.toLowerCase()}-link`}
+                                >
+                                  {name}
+                                </LocalizedClientLink>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </div>
                     </div>
                   </PopoverPanel>
                 </Transition>
